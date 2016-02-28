@@ -1,20 +1,20 @@
-// Servo8Bit Example code
-// Ilya Brutman
+// Servo8Bit cowhat controller
+// firebovine!
+// based on example by Ilya Brutman
 
 #include "Servo8Bit.h"
 #include <stdlib.h>
 
 void delay(uint16_t milliseconds);  //forward declaration to the delay function
 Servo8Bit setupServo(uint8_t controlPin, uint8_t powerPin);
-void loopityLoop(Servo8Bit myServo1);
-
+void loopityLoop(Servo8Bit rightEar, Servo8Bit leftEar);
 
 int main()
 {
-  Servo8Bit myServo1 = setupServo(0, 2);
-  // myServo2 = setupServo(1, 3);
-  loopityLoop(myServo1);
-  //loopityLoop(myServo1,myServo2);
+  srandom(42); // seed the answer to the generator
+  Servo8Bit rightEar = setupServo(0, 2);
+  Servo8Bit leftEar = setupServo(1, 3);
+  loopityLoop(rightEar, leftEar);
 }
 
 Servo8Bit setupServo(uint8_t controlPin, uint8_t powerPin)
@@ -28,18 +28,22 @@ Servo8Bit setupServo(uint8_t controlPin, uint8_t powerPin)
 }
   
 
-void loopityLoop(Servo8Bit myServo1)
+void loopityLoop(Servo8Bit rightEar, Servo8Bit leftEar)
 {
   while ( 1==1 )
   {
+    Servo8Bit myServos[2];
+    myServos[0] =  rightEar;
+    myServos[1] =  leftEar;
+    int myEar = ( random() % 2 );
     int myRandom = ( random() % 10 ) * 1000;
     delay(myRandom); // delay between 0 and 10 seconds
-    myServo1.powerOn();
-    myServo1.write(80);   //rotate to the 45 degree position
+    myServos[myEar].powerOn();
+    myServos[myEar].write(80);   //rotate to the 45 degree position
     delay(500);
-    myServo1.write(170);   //rotate to the 45 degree position
+    myServos[myEar].write(170);   //rotate to the 45 degree position
     delay(500);
-    myServo1.powerOff();
+    myServos[myEar].powerOff();
   }
 }
 

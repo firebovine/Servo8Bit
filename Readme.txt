@@ -1,5 +1,6 @@
 Version History
 ---------------
+0.8 - forked to add support for turning servo power on/off via npn transistor
 0.7 - forked to work with 16.5mhz clock and such
 0.6 	-Added ability to easily select if this driver should use timer0 or
 	  timer1.
