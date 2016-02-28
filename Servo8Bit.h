@@ -28,9 +28,9 @@
   The methods are:
 
    Servo8Bit - Class for manipulating servo motors connected to Attiny pins.
-
-   attach(pin)           - Attaches a servo motor to an i/o pin.
-   attach(pin, min, max) - Attaches to a pin setting min and max values in microseconds
+                                      - newPowerPin is pin to control servo power (via npn transistor)
+   attach(pin, newPowerPin)           - Attaches a servo motor to an i/o pin.
+   attach(pin, newPowerPin, min, max) - Attaches to a pin setting min and max values in microseconds
                            default min is 544, max is 2400
 
    write()               - Sets the servo angle in degrees.  (invalid angle that is valid as pulse in microseconds is treated as microseconds)
@@ -58,8 +58,8 @@ class Servo8Bit
 public:
   Servo8Bit();
   //TODO: create destructor
-  uint8_t attach(uint8_t pin, uint8_t powerPin);              // attach the given pin to the next free channel, returns channel number or 0 if failure
-  uint8_t attach(uint8_t pin, uint8_t powerPin, uint16_t newMin, uint16_t newMax); // as above but also sets min and max values for writes.
+  uint8_t attach(uint8_t pin, uint8_t newPowerPin);              // attach the given pin to the next free channel, returns channel number or 0 if failure
+  uint8_t attach(uint8_t pin, uint8_t newPowerPin, uint16_t newMin, uint16_t newMax); // as above but also sets min and max values for writes.
   void detach();
 
   void write(uint16_t value);               // if value is < 200 its treated as an angle, otherwise as pulse width in microseconds

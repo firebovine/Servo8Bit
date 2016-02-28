@@ -29,6 +29,7 @@
 
    Servo8Bit - Class for manipulating servo motors connected to Attiny pins.
 
+                                      - newPowerPin is pin to control servo power (via npn transistor)
    attach(pin, newPowerPin)           - Attaches a servo motor to an i/o pin.
    attach(pin, newPowerPin, min, max) - Attaches to a pin setting min and max values in microseconds
                            default min is 544, max is 2400
