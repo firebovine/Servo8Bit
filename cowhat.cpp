@@ -5,22 +5,43 @@
 #include <stdlib.h>
 
 void delay(uint16_t milliseconds);  //forward declaration to the delay function
+Servo8Bit setupServo(uint8_t controlPin, uint8_t powerPin);
+void loopityLoop(Servo8Bit myServo1);
+
 
 int main()
 {
-  Servo8Bit myServo;  //create a servo object.
-  myServo.attach(0,600,2200);  //attach the servo to pin PB0
-  myServo.write(0);   //rotate to the 45 degree position
+  Servo8Bit myServo1 = setupServo(0, 2);
+  // myServo2 = setupServo(1, 3);
+  loopityLoop(myServo1);
+  //loopityLoop(myServo1,myServo2);
+}
+
+Servo8Bit setupServo(uint8_t controlPin, uint8_t powerPin)
+{
+  Servo8Bit myServo;
+  myServo.attach(controlPin, powerPin, 600, 2200);
+  myServo.write(170);
+  delay(250);
+  myServo.powerOff();
+  return myServo;
+}
+  
+
+void loopityLoop(Servo8Bit myServo1)
+{
   while ( 1==1 )
   {
     int myRandom = ( random() % 10 ) * 1000;
     delay(myRandom); // delay between 0 and 10 seconds
-    myServo.write(180);   //rotate to the 45 degree position
+    myServo1.powerOn();
+    myServo1.write(80);   //rotate to the 45 degree position
     delay(500);
-    myServo.write(0);   //rotate to the 45 degree position
+    myServo1.write(170);   //rotate to the 45 degree position
+    delay(500);
+    myServo1.powerOff();
   }
 }
-
 
 void delayMicroseconds(uint16_t us)
 {

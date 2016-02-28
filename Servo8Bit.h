@@ -58,8 +58,8 @@ class Servo8Bit
 public:
   Servo8Bit();
   //TODO: create destructor
-  uint8_t attach(uint8_t pin);              // attach the given pin to the next free channel, returns channel number or 0 if failure
-  uint8_t attach(uint8_t pin, uint16_t newMin, uint16_t newMax); // as above but also sets min and max values for writes.
+  uint8_t attach(uint8_t pin, uint8_t powerPin);              // attach the given pin to the next free channel, returns channel number or 0 if failure
+  uint8_t attach(uint8_t pin, uint8_t powerPin, uint16_t newMin, uint16_t newMax); // as above but also sets min and max values for writes.
   void detach();
 
   void write(uint16_t value);               // if value is < 200 its treated as an angle, otherwise as pulse width in microseconds
@@ -67,6 +67,8 @@ public:
   uint16_t read();                          // returns current pulse width as an angle between 0 and 180 degrees
   uint16_t readMicroseconds();              // returns current pulse width in microseconds for this servo
   bool attached();                          // return true if this servo is attached, otherwise false
+  void powerOn();
+  void powerOff();
 
 private:
    //private constants
@@ -78,6 +80,7 @@ private:
    uint8_t  invalidServoNumber;             // value that represents and invalid servo number. This is set only once.
    uint16_t myMin;                          // minimum pulse length that corresponds to the angle of 0 degrees
    uint16_t myMax;                          // maximum pulse length that corresponds to the angle of 180 degrees
+   uint8_t  powerPin;                     // control pin to control power to servo via transistor
 
    //our own map function, so that we don't have to get it from some library
    long map(long x, long in_min, long in_max, long out_min, long out_max);

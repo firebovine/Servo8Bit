@@ -29,8 +29,8 @@
 
    Servo8Bit - Class for manipulating servo motors connected to Attiny pins.
 
-   attach(pin)           - Attaches a servo motor to an i/o pin.
-   attach(pin, min, max) - Attaches to a pin setting min and max values in microseconds
+   attach(pin, newPowerPin)           - Attaches a servo motor to an i/o pin.
+   attach(pin, newPowerPin, min, max) - Attaches to a pin setting min and max values in microseconds
                            default min is 544, max is 2400
 
    write()               - Sets the servo angle in degrees.  (invalid angle that is valid as pulse in microseconds is treated as microseconds)
@@ -808,11 +808,12 @@ Servo8Bit::Servo8Bit()
 // DESCRIPTION: Attaches a servo motor to an i/o pin on Port B.
 //
 // INPUT:       pin - which pin on portB to attach to
+//              newPowerPin - which pin on portB to use to control servo power
 //
 // RETURNS:     The servo number of this servo.
 //
 //=============================================================================
-uint8_t Servo8Bit::attach(uint8_t pin)
+uint8_t Servo8Bit::attach(uint8_t pin, uint8_t newPowerPin)
 {
     //make sure we have a valid servo number. If it's invalid then exit doing nothing.
     if(myServoNumber == invalidServoNumber) return 0;
@@ -834,32 +835,59 @@ uint8_t Servo8Bit::attach(uint8_t pin)
         //bad pin value. do nothing.
     }
 
+    if ( newPowerPin <= 5)
+    {
+        // set powerPin to OUTPUT
+        powerPin = newPowerPin;
+        DDRB  |= (1<<powerPin);
+        powerOn();
+    } else {
+        // bad pin value. do nothing.
+    }
+
     return myServoNumber;
 
 }//end attach
 
+void Servo8Bit::powerOn()
+{
+    if ( powerPin <= 5 )
+    {
+        PORTB |= (1<<powerPin);
+    } else {
+        // do nothing, invalid pin
+    }
+}
 
-
-
+void Servo8Bit::powerOff()
+{
+    if ( powerPin <= 5 )
+    {
+        PORTB &= ~(1<<powerPin);
+    } else {
+        // do nothing, invalid pin
+    }
+}
 
 //=============================================================================
-// FUNCTION:    uint8_t attach(uint8_t pin, uint16_t min, uint16_t max)
+// FUNCTION:    uint8_t attach(uint8_t pin, uint8_t newPowerPin, uint16_t min, uint16_t max)
 //
 // DESCRIPTION: Attaches a servo motor to an i/o pin on Port B and also sets
 //              the minimum and maximum pulse length values for this servo.
 //
 // INPUT:       pin - which pin on portB to attach to
+//              newPowerPin - which pin on portB to use to control servo power
 //              min - minimum pulse length to use
 //              max - maximum pulse length to use
 //
 // RETURNS:
 //
 //=============================================================================
-uint8_t Servo8Bit::attach(uint8_t pin, uint16_t newMin, uint16_t newMax)
+uint8_t Servo8Bit::attach(uint8_t pin, uint8_t newPowerPin, uint16_t newMin, uint16_t newMax)
 {
     myMin = newMin;
     myMax = newMax;
-    return attach(pin);
+    return attach(pin, newPowerPin);
 }//end attach with min/max
 
 

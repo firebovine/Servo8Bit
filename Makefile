@@ -47,7 +47,7 @@
 
 PORT = usb
 
-TARGET = ex2
+TARGET = cowhat
 
 ARDUINO = 
 
